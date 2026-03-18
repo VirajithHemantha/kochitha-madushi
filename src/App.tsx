@@ -2,7 +2,16 @@ import React, { useState, ReactNode, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "motion/react";
 import { HelpCircle, MapPin, Clock, Info, Heart, CheckCircle2, Flower2, Music, Volume2, VolumeX, Sparkles, Calendar } from "lucide-react";
 
-// FlipCard Component with 3D Tilt Effect
+// Global discovery flag — once any card is tapped, hint vanishes on all cards
+let globalDiscovered = false;
+const discoveryListeners: (() => void)[] = [];
+function markDiscovered() {
+  if (globalDiscovered) return;
+  globalDiscovered = true;
+  discoveryListeners.forEach(fn => fn());
+}
+
+// FlipCard Component with 3D Tilt Effect + Premium Mobile Tap Hint
 function FlipCard({ front, back, className, containerClassName, rounded = "rounded-[2rem]", ...motionProps }: {
   front: ReactNode,
   back: ReactNode,
@@ -12,6 +21,8 @@ function FlipCard({ front, back, className, containerClassName, rounded = "round
   [key: string]: any
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showHint, setShowHint] = useState(!globalDiscovered);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -20,10 +31,18 @@ function FlipCard({ front, back, className, containerClassName, rounded = "round
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
 
   const springConfig = { damping: 20, stiffness: 300 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
   const springRotateX = useSpring(rotateX, springConfig);
   const springRotateY = useSpring(rotateY, springConfig);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia("(hover: none) and (pointer: coarse)").matches);
+    const handle = () => setShowHint(false);
+    discoveryListeners.push(handle);
+    return () => {
+      const idx = discoveryListeners.indexOf(handle);
+      if (idx > -1) discoveryListeners.splice(idx, 1);
+    };
+  }, []);
 
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -39,15 +58,23 @@ function FlipCard({ front, back, className, containerClassName, rounded = "round
     setIsFlipped(false);
   }
 
+  function handleClick() {
+    setIsFlipped(prev => !prev);
+    if (!globalDiscovered) {
+      setShowHint(false);
+      markDiscovered();
+    }
+  }
+
   return (
     <motion.div
       {...motionProps}
       ref={cardRef}
-      className={`perspective-1000 cursor-pointer ${containerClassName || ""}`}
+      className={`perspective-1000 cursor-pointer relative ${containerClassName || ""}`}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsFlipped(true)}
+      onMouseEnter={() => { if (!isTouchDevice) setIsFlipped(true); }}
       onMouseLeave={handleMouseLeave}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={handleClick}
       style={{
         rotateX: isFlipped ? 0 : springRotateX,
         rotateY: isFlipped ? 0 : springRotateY,
@@ -76,12 +103,46 @@ function FlipCard({ front, back, className, containerClassName, rounded = "round
           {/* Decorative Corner Ornaments */}
           <div className="absolute top-5 left-5 w-10 h-10 border-t-2 border-l-2 border-sage/10 rounded-tl-xl" />
           <div className="absolute bottom-5 right-5 w-10 h-10 border-b-2 border-r-2 border-sage/10 rounded-br-xl" />
-
           <div className="relative z-10 w-full h-full flex flex-col py-4">
             {back}
           </div>
         </div>
       </motion.div>
+
+      {/* ── Premium Mobile "Tap to Reveal" Hint ── */}
+      <AnimatePresence>
+        {showHint && isTouchDevice && !isFlipped && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6, transition: { duration: 0.4 } }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none z-50"
+          >
+            <motion.div
+              animate={{ y: [0, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              className="flex items-center gap-2 bg-black/35 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/25 shadow-xl"
+            >
+              {/* Ripple tap dot */}
+              <span className="relative flex items-center justify-center w-4 h-4 shrink-0">
+                <motion.span
+                  animate={{ scale: [1, 2.2], opacity: [0.7, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.1, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-full bg-white/70"
+                />
+                <span className="relative w-2 h-2 rounded-full bg-white shadow-sm" />
+              </span>
+              <span
+                className="text-white text-[9px] uppercase tracking-[0.2em] font-bold whitespace-nowrap"
+                style={{ fontFamily: "Inter, sans-serif", letterSpacing: "0.18em" }}
+              >
+                Tap to reveal
+              </span>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -113,8 +174,8 @@ function RealisticPetal({ size = 20, className = "" }: { size?: number, classNam
       >
         <defs>
           <radialGradient id="petalGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#f7d7d3" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#E5B2AD" stopOpacity="0.7" />
+            <stop offset="0%" stopColor="#C4714A" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#9C8470" stopOpacity="0.65" />
           </radialGradient>
         </defs>
         <path
@@ -212,8 +273,8 @@ export default function App() {
               transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
               className="absolute top-12 md:top-24 left-0 right-0 text-center z-10 pointer-events-none"
             >
-              <h1 className="serif text-4xl md:text-6xl text-sage/80 font-light tracking-[0.2em] drop-shadow-xl">Aaron & Denice</h1>
-              <p className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.6em] text-sage/60 font-bold">14 December 2025</p>
+              <h1 className="serif text-4xl md:text-6xl text-sage/80 font-light tracking-[0.2em] drop-shadow-xl">Hashimi & Zerlin</h1>
+              <p className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.6em] text-sage/60 font-bold">23 May 2026</p>
             </motion.div>
 
             {/* Slow Spinning Elegant Ambient Rings */}
@@ -250,7 +311,7 @@ export default function App() {
                   opacity: [0.6, 0.9, 0.6]
                 }}
                 transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-[30%] -left-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(229,178,173,0.5)_0%,transparent_60%)] blur-3xl"
+                className="absolute -top-[30%] -left-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(196,113,74,0.45)_0%,transparent_60%)] blur-3xl"
               />
               <motion.div
                 animate={{
@@ -259,7 +320,7 @@ export default function App() {
                   opacity: [0.5, 0.8, 0.5]
                 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-[30%] -right-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(164,178,165,0.4)_0%,transparent_60%)] blur-3xl"
+                className="absolute -bottom-[30%] -right-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(156,132,112,0.4)_0%,transparent_60%)] blur-3xl"
               />
 
               {/* Natural floating dust motes / glowing ambient petals */}
@@ -289,9 +350,9 @@ export default function App() {
                     <Flower2 className="text-sage/20 w-4 h-4 md:w-6 md:h-6" />
                   ) : (
                     <div
-                      className="rounded-full shadow-[0_0_15px_rgba(229,178,173,0.4)]"
+                      className="rounded-full shadow-[0_0_15px_rgba(196,113,74,0.4)]"
                       style={{
-                        backgroundColor: i % 2 === 0 ? '#E5B2AD' : '#D4AF37', // Blush and Gold
+                        backgroundColor: i % 2 === 0 ? '#C4714A' : '#A84C2C', // Terracotta and Rust
                         width: Math.random() * 6 + 2 + "px",
                         height: Math.random() * 6 + 2 + "px",
                         filter: `blur(${Math.random() * 1}px)`,
@@ -338,7 +399,7 @@ export default function App() {
                   key={`bokeh-${i}`}
                   className="absolute rounded-full mix-blend-soft-light"
                   style={{
-                    backgroundColor: i % 2 === 0 ? '#A4B2A5' : '#FDFBF7',
+                    backgroundColor: i % 2 === 0 ? '#9C8470' : '#F5EFE0',
                     opacity: 0.3,
                     width: Math.random() * 150 + 100 + "px",
                     height: Math.random() * 150 + 100 + "px",
@@ -483,7 +544,7 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               className="script text-7xl md:text-9xl text-sage drop-shadow-lg relative z-10"
             >
-              Aaron
+              Hashimi
             </motion.h2>
 
             <div className="relative my-4 md:my-0 flex items-center justify-center">
@@ -503,7 +564,7 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               className="script text-7xl md:text-9xl text-sage drop-shadow-lg relative z-10"
             >
-              Denice
+              Zerlin
             </motion.h2>
           </div>
 
@@ -518,39 +579,198 @@ export default function App() {
             <motion.div
               layoutId="envelope-box"
               transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
-              className="w-full max-w-3xl relative h-80 md:h-[450px] bg-sage rounded-[2rem] shadow-2xl group cursor-default"
+              className="w-full max-w-3xl relative cursor-default"
+              style={{ height: "clamp(340px, 60vw, 520px)" }}
             >
-              <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none rounded-[2rem] overflow-hidden" />
+              {/* ── Ambient glow behind envelope ── */}
+              <motion.div
+                animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.5, 0.3] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-x-8 top-1/2 h-40 bg-sage/30 blur-[60px] rounded-full pointer-events-none z-0"
+              />
 
-              {/* Opened Flap pointing up */}
-              <div className="absolute bottom-[99%] left-0 right-0 h-[55%] bg-sage clip-path-envelope-bottom pointer-events-none origin-bottom -mb-px z-0">
-                <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
-                <div className="absolute inset-0 bg-black/10" />
+              {/* ── Envelope Body ── */}
+              <div className="absolute bottom-0 left-0 right-0 h-[72%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_20px_60px_-10px_rgba(61,34,21,0.5)]">
+                {/* Rich umber base */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#5C3320] to-[#3D2215]" />
+                {/* Subtle linen texture */}
+                <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+                {/* Satin sheen */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20" />
+                {/* Bottom fold crease line */}
+                <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
+                {/* Side fold lines */}
+                <div className="absolute top-0 bottom-0 left-0 w-px bg-white/8" />
+                <div className="absolute top-0 bottom-0 right-0 w-px bg-white/8" />
+                {/* Official invite stamp at bottom */}
+                <div className="absolute bottom-5 left-0 right-0 flex flex-col items-center gap-1 pointer-events-none">
+                  <div className="w-16 h-px bg-[#C9B99A]/40" />
+                  <p className="serif italic text-[#C9B99A]/50 text-[10px] tracking-[0.4em] uppercase">Official Invite · 2026</p>
+                  <div className="w-16 h-px bg-[#C9B99A]/40" />
+                </div>
               </div>
 
-              {/* The Invitation Paper Sticking Out */}
-              <motion.div
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: -60, opacity: 1 }}
-                transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
-                className="absolute -top-[60px] left-6 right-6 md:left-12 md:right-12 bottom-12 bg-paper rounded-[1rem] shadow-[0_-15px_30px_rgba(0,0,0,0.15)] flex flex-col items-center pt-12 md:pt-20 space-y-8 z-10 border border-sage/10 overflow-hidden"
+              {/* ── Opened V-Flap (pointing up) ── */}
+              <div
+                className="absolute left-0 right-0 z-10 pointer-events-none overflow-hidden"
+                style={{ bottom: "71.5%", height: "46%" }}
               >
-                <div className="absolute -top-32 -left-32 w-64 h-64 bg-sage/5 rounded-full blur-3xl pointer-events-none" />
-                <span className="serif text-sage text-3xl md:text-4xl tracking-[0.4em] uppercase text-center mt-4 drop-shadow-sm">The<br />Invitation</span>
-                <div className="w-24 h-px bg-sage/30 mt-8 mb-4" />
-                <p className="serif text-lg md:text-xl italic text-sage/70 font-light tracking-wider">A Celebration of Love</p>
+                {/* Outer flap — umber */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "polygon(0 100%, 50% 0, 100% 100%)", background: "linear-gradient(160deg, #3D2215 0%, #5C3320 60%, #4A2918 100%)" }}
+                >
+                  <div className="absolute inset-0 opacity-25 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+                  <div className="absolute inset-0" style={{ clipPath: "polygon(0 100%, 50% 0, 100% 100%)", background: "linear-gradient(to bottom, rgba(255,255,255,0.07) 0%, transparent 70%)" }} />
+                </div>
+                {/* Inner flap lining — terracotta reveal */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "polygon(3% 100%, 50% 8%, 97% 100%)", background: "linear-gradient(170deg, #C4714A 0%, #A84C2C 100%)" }}
+                >
+                  <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, transparent 50%)" }} />
+                </div>
+                {/* Flap crease shadow */}
+                <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-black/30 to-transparent" />
+              </div>
+
+              {/* ── Invitation Card Rising from envelope ── */}
+              <motion.div
+                initial={{ y: 120, opacity: 0 }}
+                animate={{ y: -90, opacity: 1 }}
+                transition={{ duration: 1.4, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute left-8 right-8 md:left-16 md:right-16 z-20"
+                style={{ bottom: "52%", top: "auto" }}
+              >
+                {/* Card shadow */}
+                <div className="absolute -bottom-3 left-4 right-4 h-8 bg-black/20 blur-xl rounded-full" />
+
+                {/* Card itself */}
+                <div className="relative bg-[#F5EFE0] rounded-2xl overflow-hidden shadow-[0_-20px_60px_rgba(61,34,21,0.3),0_4px_20px_rgba(0,0,0,0.1)] border border-[#C9B99A]/30">
+                  {/* Linen texture */}
+                  <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
+                  {/* Warm ambient glow inside card */}
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-24 bg-[#C4714A]/10 blur-3xl rounded-full" />
+
+                  {/* Outer border line */}
+                  <div className="absolute inset-[10px] border border-[#9C8470]/25 rounded-xl pointer-events-none" />
+                  {/* Inner border line */}
+                  <div className="absolute inset-[16px] border border-[#C4714A]/15 rounded-lg pointer-events-none" />
+
+                  {/* Corner botanical ornaments */}
+                  {[["top-3 left-3", "rotate-0"], ["top-3 right-3", "rotate-90"], ["bottom-3 left-3", "-rotate-90"], ["bottom-3 right-3", "rotate-180"]].map(([pos, rot], i) => (
+                    <div key={i} className={`absolute ${pos} w-7 h-7 pointer-events-none`}>
+                      <svg viewBox="0 0 28 28" fill="none" className={`w-full h-full ${rot} opacity-40`}>
+                        <path d="M2 2 C2 2, 14 2, 14 14" stroke="#9C8470" strokeWidth="0.8" fill="none"/>
+                        <path d="M2 2 C8 2, 2 8, 2 14" stroke="#9C8470" strokeWidth="0.8" fill="none"/>
+                        <circle cx="4" cy="4" r="1.2" fill="#C4714A" opacity="0.5"/>
+                        <path d="M6 2 C6 2, 6 6, 10 6" stroke="#C4714A" strokeWidth="0.6" fill="none" opacity="0.5"/>
+                      </svg>
+                    </div>
+                  ))}
+
+                  {/* Card content */}
+                  <div className="relative z-10 px-8 py-6 md:px-12 md:py-8 flex flex-col items-center text-center gap-3 md:gap-4">
+                    {/* Top ornamental divider */}
+                    <div className="flex items-center gap-3 w-full max-w-[200px]">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#9C8470]/50" />
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                      >
+                        <svg viewBox="0 0 16 16" className="w-3 h-3 opacity-50" fill="#C4714A">
+                          <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z"/>
+                        </svg>
+                      </motion.div>
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#9C8470]/50" />
+                    </div>
+
+                    {/* Monogram wax seal */}
+                    <div className="relative">
+                      <motion.div
+                        animate={{ scale: [1, 1.04, 1] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[#C4714A] to-[#6B3D28] shadow-[0_4px_16px_rgba(196,113,74,0.5),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center border-2 border-[#C9B99A]/30"
+                      >
+                        <span className="serif text-white font-bold text-lg md:text-2xl tracking-tight drop-shadow">H&Z</span>
+                      </motion.div>
+                      {/* Seal ring */}
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+                        className="absolute -inset-2 rounded-full border border-dashed border-[#9C8470]/30"
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <div className="space-y-0.5">
+                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.5em] text-[#9C8470] font-bold">You are cordially invited to</p>
+                      <h3 className="serif text-2xl md:text-4xl text-[#3D2215] font-light tracking-[0.08em]">The Wedding of</h3>
+                    </div>
+
+                    {/* Names */}
+                    <div className="flex items-center gap-3 md:gap-5">
+                      <span className="script text-3xl md:text-5xl text-[#C4714A] drop-shadow-sm">Hashimi</span>
+                      <Heart size={14} className="text-[#9C8470]/60 shrink-0" fill="currentColor"/>
+                      <span className="script text-3xl md:text-5xl text-[#C4714A] drop-shadow-sm">Zerlin</span>
+                    </div>
+
+                    {/* Date & venue line */}
+                    <div className="flex items-center gap-2 md:gap-4 text-[#6B3D28]/70">
+                      <div className="h-px flex-1 bg-[#C9B99A]/40" />
+                      <div className="flex flex-col items-center">
+                        <span className="serif italic text-[11px] md:text-sm tracking-wider">23 May 2026</span>
+                        <span className="text-[8px] md:text-[9px] uppercase tracking-[0.3em] text-[#9C8470] mt-0.5">Waters Edge · Grand Ballroom</span>
+                      </div>
+                      <div className="h-px flex-1 bg-[#C9B99A]/40" />
+                    </div>
+
+                    {/* Bottom ornamental divider */}
+                    <div className="flex items-center gap-3 w-full max-w-[200px]">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#9C8470]/50" />
+                      <svg viewBox="0 0 16 16" className="w-3 h-3 opacity-40" fill="#C4714A">
+                        <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z"/>
+                      </svg>
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#9C8470]/50" />
+                    </div>
+                  </div>
+
+                  {/* Shimmer sweep */}
+                  <motion.div
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{ repeat: Infinity, duration: 4, delay: 2, ease: "easeInOut" }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/12 to-transparent skew-x-12 pointer-events-none"
+                  />
+                </div>
               </motion.div>
 
-              {/* Envelope Front Layer ensuring it covers the bottom half of the paper */}
-              <div className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-20">
-                <div className="absolute bottom-0 left-0 right-0 h-[65%] bg-sage clip-path-envelope-bottom pointer-events-none">
-                  <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+              {/* ── Envelope front bottom flaps (cover lower half of card) ── */}
+              <div className="absolute bottom-0 left-0 right-0 h-[72%] z-30 rounded-b-[2.5rem] overflow-hidden pointer-events-none">
+                {/* Left diagonal fold */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "polygon(0 0, 50% 55%, 0 100%)", background: "linear-gradient(135deg, #47291A 0%, #3D2215 100%)" }}
+                >
+                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/6 to-transparent" />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 h-[65%] shadow-[inset_0_30px_40px_rgba(0,0,0,0.15)] clip-path-envelope-bottom pointer-events-none" />
-                <div className="absolute bottom-0 left-0 right-0 h-[65%] bg-white/5 clip-path-envelope-bottom pointer-events-none border-t border-white/10" />
-                <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/20 to-transparent shadow-[inset_0_10px_20px_rgba(0,0,0,0.2)]" />
+                {/* Right diagonal fold */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "polygon(100% 0, 50% 55%, 100% 100%)", background: "linear-gradient(225deg, #47291A 0%, #3D2215 100%)" }}
+                >
+                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
+                  <div className="absolute inset-0 bg-gradient-to-bl from-white/6 to-transparent" />
+                </div>
+                {/* Centre crease shadow */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "polygon(45% 50%, 50% 55%, 55% 50%, 50% 48%)", background: "rgba(0,0,0,0.3)" }}
+                />
+                {/* Overall top-edge depth shadow */}
+                <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-black/25 to-transparent" />
               </div>
-              <div className="absolute bottom-10 left-0 right-0 text-center text-white/50 serif italic text-sm z-30 tracking-widest uppercase pointer-events-none">Official Invite 2025</div>
             </motion.div>
           )}
         </div>
@@ -569,26 +789,26 @@ export default function App() {
             <FlipCard
               containerClassName="w-full h-[220px] md:h-[350px] lg:h-[350px]"
               front={
-                <div className="w-full h-full relative overflow-hidden bg-[#1a1a1a] flex flex-col justify-center items-center text-center p-6 group">
+                <div className="w-full h-full relative overflow-hidden bg-[#3D2215] flex flex-col justify-center items-center text-center p-6 group">
                   {/* Botanical Background Pattern */}
                   <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/floral-paper.png')] pointer-events-none" />
-                  {/* Gold Leaf Corner Decorative SVGs would go here, using shadows for now */}
-                  <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/20 to-transparent blur-2xl" />
-                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-[#D4AF37]/20 to-transparent blur-2xl" />
+                  {/* Corner glow accents */}
+                  <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-[#C4714A]/25 to-transparent blur-2xl" />
+                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-[#A84C2C]/25 to-transparent blur-2xl" />
 
                   <div className="relative z-10 space-y-4">
                     <motion.div
                       animate={{ rotate: [0, 5, -5, 0] }}
                       transition={{ repeat: Infinity, duration: 4 }}
-                      className="text-[#D4AF37] opacity-60 group-hover:opacity-100 transition-opacity"
+                      className="text-[#C9B99A] opacity-60 group-hover:opacity-100 transition-opacity"
                     >
                       <Info size={32} />
                     </motion.div>
                     <div>
-                      <p className="serif italic text-[10px] md:text-sm text-[#D4AF37] mb-1 uppercase tracking-[0.3em]">Explore</p>
+                      <p className="serif italic text-[10px] md:text-sm text-[#C9B99A] mb-1 uppercase tracking-[0.3em]">Explore</p>
                       <h3 className="serif text-2xl md:text-4xl text-white tracking-[0.1em] font-light">The Details</h3>
                     </div>
-                    <div className="w-8 h-px bg-[#D4AF37]/50 mx-auto group-hover:w-16 transition-all duration-700" />
+                    <div className="w-8 h-px bg-[#C9B99A]/60 mx-auto group-hover:w-16 transition-all duration-700" />
                   </div>
                 </div>
               }
@@ -630,7 +850,7 @@ export default function App() {
             <FlipCard
               containerClassName="w-full h-[220px] md:h-[350px] lg:h-[350px]"
               front={
-                <div className="w-full h-full bg-[#fdfbf7] p-2 md:p-8 flex flex-col items-center justify-center text-center space-y-2 md:space-y-4 relative group">
+                <div className="w-full h-full bg-[#F5EFE0] p-2 md:p-8 flex flex-col items-center justify-center text-center space-y-2 md:space-y-4 relative group">
                   {/* Subtle Paper Texture Overlay */}
                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-40 pointer-events-none" />
 
@@ -642,22 +862,22 @@ export default function App() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                      <p className="text-[8px] md:text-xs uppercase tracking-[0.4em] text-zinc-400 font-black mb-1 md:mb-2">Sunday</p>
+                      <p className="text-[8px] md:text-xs uppercase tracking-[0.4em] text-zinc-400 font-black mb-1 md:mb-2">Saturday</p>
                       <div className="relative inline-block px-6 md:px-8 py-1 md:py-2 border-y border-sage/30">
-                        <p className="serif text-5xl md:text-8xl font-medium text-sage leading-none">14</p>
+                        <p className="serif text-5xl md:text-8xl font-medium text-sage leading-none">23</p>
                         <motion.div
                           animate={{ opacity: [0.4, 1, 0.4] }}
                           transition={{ repeat: Infinity, duration: 2 }}
-                          className="absolute -top-1 -right-1 text-[#D4AF37]"
+                          className="absolute -top-1 -right-1 text-[#A84C2C]"
                         >
                           <Sparkles size={12} className="md:w-4 md:h-4" />
                         </motion.div>
                       </div>
-                      <p className="serif text-sm md:text-2xl font-light tracking-[0.2em] mt-2 md:mt-3">DECEMBER</p>
+                      <p className="serif text-sm md:text-2xl font-light tracking-[0.2em] mt-2 md:mt-3">MAY</p>
                     </div>
 
                     <div className="pt-1">
-                      <p className="text-[7px] md:text-xs uppercase tracking-[0.4em] md:tracking-[0.5em] font-black text-sage/40">Twenty Twenty Five</p>
+                      <p className="text-[7px] md:text-xs uppercase tracking-[0.4em] md:tracking-[0.5em] font-black text-sage/40">Twenty Twenty Six</p>
                     </div>
                   </div>
 
@@ -688,9 +908,9 @@ export default function App() {
             <FlipCard
               containerClassName="w-full h-[220px] md:h-[350px] lg:h-[350px]"
               front={
-                <div className="w-full h-full bg-[#f8f5f0] p-6 flex flex-col justify-center items-center text-center relative group overflow-hidden">
+                <div className="w-full h-full bg-[#F5EFE0] p-6 flex flex-col justify-center items-center text-center relative group overflow-hidden">
                   {/* Wax Seal Circle Background Shadow */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-sage/5 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-sage/10 rounded-full blur-3xl pointer-events-none" />
 
                   <div className="relative z-10 space-y-6">
                     <p className="serif italic text-lg md:text-2xl text-sage/60 group-hover:scale-110 transition-transform">Kindly</p>
@@ -704,7 +924,7 @@ export default function App() {
                       />
                       <div className="w-16 h-16 md:w-28 md:h-28 bg-sage rounded-full flex items-center justify-center shadow-xl border-4 border-sage/50 relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
                         <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
-                        <p className="serif text-white font-bold text-3xl md:text-6xl tracking-tighter drop-shadow-md">A&D</p>
+                        <p className="serif text-white font-bold text-3xl md:text-6xl tracking-tighter drop-shadow-md">H&Z</p>
                       </div>
                     </div>
 
@@ -717,7 +937,7 @@ export default function App() {
                   <CheckCircle2 size={24} className="text-sage mb-2 md:mb-4 mx-auto opacity-70 md:w-8 md:h-8" />
                   <h4 className="serif text-xl md:text-3xl text-sage mb-2 md:mb-4">Are you attending?</h4>
                   <p className="text-[8px] md:text-xs text-zinc-500 uppercase tracking-widest mb-4 md:mb-8">
-                    Please let us know by<br />November 1st, 2025
+                    Please let us know by<br />May 1st, 2026
                   </p>
                   <div className="w-full flex gap-2 md:gap-4 px-2 md:px-4">
                     <motion.button
@@ -757,7 +977,7 @@ export default function App() {
                       opacity: [0.3, 0.6, 0.3]
                     }}
                     transition={{ repeat: Infinity, duration: 5 }}
-                    className="absolute w-full h-full bg-gradient-to-tr from-[#D4AF37]/40 via-transparent to-white/20 blur-xl"
+                    className="absolute w-full h-full bg-gradient-to-tr from-[#A84C2C]/40 via-transparent to-[#C9B99A]/20 blur-xl"
                   />
 
                   <div className="relative z-10 text-white space-y-2">
@@ -801,7 +1021,7 @@ export default function App() {
               front={
                 <div className="w-full h-full relative group">
                   <img
-                    src="https://paradiseweddings.com/img1/containers/img/resorts/villa-premiere-boutique-hotel/jetty-wedding-setup-villa-premiere-boutique-hotel.jpg/39f8e4ff77ee4382feefc6e8be057e8a.webp"
+                    src="https://www.watersedge.lk/wp-content/uploads/2018/04/Ballroom-2-768x512.jpg"
                     alt="Venue"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     referrerPolicy="no-referrer"
@@ -813,25 +1033,26 @@ export default function App() {
                       <span className="w-4 h-px bg-sage/30" />
                       The Location
                     </p>
-                    <h3 className="serif text-2xl md:text-5xl text-sage leading-tight drop-shadow-sm font-medium">Jardin de<br />Josefina</h3>
+                    <h3 className="serif text-2xl md:text-5xl text-sage leading-tight drop-shadow-sm font-medium">Waters Edge<br />Grand Ballroom</h3>
                   </div>
 
                   <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-sage flex items-center gap-3 bg-white/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/60 shadow-lg">
                     <MapPin className="text-sage animate-bounce" size={16} />
-                    <p className="serif text-[10px] md:text-sm tracking-[0.2em] font-bold uppercase">Laguna, PH</p>
+                    <p className="serif text-[10px] md:text-sm tracking-[0.2em] font-bold uppercase">Waters Edge</p>
                   </div>
                 </div>
               }
               back={
                 <>
                   <MapPin size={24} className="text-sage mb-4 md:mb-6 opacity-70 md:w-9 md:h-9" />
-                  <h4 className="serif text-2xl md:text-4xl text-sage mb-2 md:mb-4">Jardin de Josefina</h4>
+                  <h4 className="serif text-2xl md:text-4xl text-sage mb-2 md:mb-4">Waters Edge Grand Ballroom</h4>
                   <p className="text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest leading-loose mb-4 md:mb-6">
-                    San Pablo City, Laguna<br />Philippines
+                    Waters Edge<br />Grand Ballroom
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => window.open("https://maps.app.goo.gl/3EQ7xzj3EX9T2xEx6", "_blank")}
                     className="px-6 py-2 md:px-8 md:py-3 bg-sage text-white rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
                   >View Map</motion.button>
                 </>
@@ -852,8 +1073,8 @@ export default function App() {
               front={
                 <div className="w-full h-full relative group overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800"
-                    alt="Couple"
+                    src="https://t3.ftcdn.net/jpg/01/65/52/08/360_F_165520839_6E1bLjjMeUEYqdiyKgerqLPiKUDsMHgI.jpg"
+                    alt="Timeline"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
@@ -890,7 +1111,7 @@ export default function App() {
 
                   <div className="w-full max-w-sm space-y-4 md:space-y-6 text-left">
                     <div className="flex items-start gap-2 md:gap-4">
-                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">3:00 PM</span>
+                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">7:00 PM</span>
                       <div className="w-px h-full bg-sage/30 relative mt-2 -ml-[1px] md:-ml-2 shrink-0">
                         <div className="absolute top-0 -left-[3px] w-2 h-2 rounded-full bg-sage" />
                       </div>
@@ -901,7 +1122,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-start gap-2 md:gap-4">
-                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">4:30 PM</span>
+                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">7:30 PM</span>
                       <div className="w-px h-12 md:h-16 bg-sage/30 relative -ml-[1px] md:-ml-2 shrink-0">
                         <div className="absolute top-0 -left-[3px] w-2 h-2 rounded-full bg-sage" />
                       </div>
@@ -912,7 +1133,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-start gap-2 md:gap-4">
-                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">6:00 PM</span>
+                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">8:30 PM</span>
                       <div className="w-px h-full bg-transparent relative mt-2 -ml-[1px] md:-ml-2 shrink-0">
                         <div className="absolute top-0 -left-[3px] w-2 h-2 rounded-full bg-sage" />
                       </div>
@@ -948,7 +1169,7 @@ export default function App() {
             {[
               { year: "2020", title: "First Met", desc: "A chance encounter that changed everything.", icon: <Heart className="w-5 h-5" /> },
               { year: "2022", title: "The Proposal", desc: "Underneath the stars, she said yes!", icon: <Heart className="w-5 h-5" /> },
-              { year: "2025", title: "The Big Day", desc: "Beginning our forever, together.", icon: <Heart className="w-5 h-5" /> }
+              { year: "2026", title: "The Big Day", desc: "Beginning our forever, together.", icon: <Heart className="w-5 h-5" /> }
             ].map((item, idx) => (
               <motion.div
                 key={idx}
@@ -982,7 +1203,7 @@ export default function App() {
         >
           <div className="flex items-center justify-center gap-6 text-sage/40">
             <div className="h-px w-16 bg-current" />
-            <span className="text-xs uppercase tracking-[0.6em] font-medium">Est. 2025</span>
+            <span className="text-xs uppercase tracking-[0.6em] font-medium">Est. 2026</span>
             <div className="h-px w-16 bg-current" />
           </div>
           <p className="serif italic text-zinc-500 text-xl max-w-lg mx-auto leading-relaxed">
