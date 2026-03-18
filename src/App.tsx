@@ -192,6 +192,7 @@ export default function App() {
   const [isFlapOpen, setIsFlapOpen] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
 
   const { scrollYProgress } = useScroll();
@@ -200,6 +201,14 @@ export default function App() {
     damping: 30,
     restDelta: 0.001
   });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    const updateSize = () => setIsSmallScreen(mediaQuery.matches);
+    updateSize();
+    mediaQuery.addEventListener("change", updateSize);
+    return () => mediaQuery.removeEventListener("change", updateSize);
+  }, []);
 
   const addHeart = (e: React.MouseEvent | React.TouchEvent) => {
     const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
@@ -590,7 +599,7 @@ export default function App() {
               />
 
               {/* ── Envelope Body ── */}
-              <div className="absolute bottom-0 left-0 right-0 h-[72%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_20px_60px_-10px_rgba(61,34,21,0.5)]">
+              <div className="absolute bottom-0 left-0 right-0 h-[68%] md:h-[72%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_20px_60px_-10px_rgba(61,34,21,0.5)]">
                 {/* Rich umber base */}
                 <div className="absolute inset-0 bg-gradient-to-b from-[#5C3320] to-[#3D2215]" />
                 {/* Subtle linen texture */}
@@ -613,7 +622,7 @@ export default function App() {
               {/* ── Opened V-Flap (pointing up) ── */}
               <div
                 className="absolute left-0 right-0 z-10 pointer-events-none overflow-hidden"
-                style={{ bottom: "71.5%", height: "46%" }}
+                style={{ bottom: isSmallScreen ? "67.5%" : "71.5%", height: isSmallScreen ? "42%" : "46%" }}
               >
                 {/* Outer flap — umber */}
                 <div
@@ -638,40 +647,50 @@ export default function App() {
               {/* ── Invitation Card Rising from envelope ── */}
               <motion.div
                 initial={{ y: 120, opacity: 0 }}
-                animate={{ y: -90, opacity: 1 }}
+                animate={{ y: isSmallScreen ? -58 : -90, opacity: 1 }}
                 transition={{ duration: 1.4, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute left-8 right-8 md:left-16 md:right-16 z-20"
-                style={{ bottom: "52%", top: "auto" }}
+                className="absolute left-4 right-4 md:left-16 md:right-16 z-20"
+                style={{ bottom: isSmallScreen ? "40%" : "52%", top: "auto" }}
               >
                 {/* Card shadow */}
                 <div className="absolute -bottom-3 left-4 right-4 h-8 bg-black/20 blur-xl rounded-full" />
 
                 {/* Card itself */}
-                <div className="relative bg-[#F5EFE0] rounded-2xl overflow-hidden shadow-[0_-20px_60px_rgba(61,34,21,0.3),0_4px_20px_rgba(0,0,0,0.1)] border border-[#C9B99A]/30">
-                  {/* Linen texture */}
-                  <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
-                  {/* Warm ambient glow inside card */}
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-24 bg-[#C4714A]/10 blur-3xl rounded-full" />
+                <div className="relative bg-[#F5EFE0] rounded-2xl shadow-[0_-20px_60px_rgba(61,34,21,0.3),0_4px_20px_rgba(0,0,0,0.1)] border border-[#C9B99A]/30">
+                  {/* Decorative layers (clipped to rounded corners) */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+                    {/* Linen texture */}
+                    <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
+                    {/* Warm ambient glow inside card */}
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-24 bg-[#C4714A]/10 blur-3xl rounded-full" />
 
-                  {/* Outer border line */}
-                  <div className="absolute inset-[10px] border border-[#9C8470]/25 rounded-xl pointer-events-none" />
-                  {/* Inner border line */}
-                  <div className="absolute inset-[16px] border border-[#C4714A]/15 rounded-lg pointer-events-none" />
+                    {/* Outer border line */}
+                    <div className="absolute inset-[10px] border border-[#9C8470]/25 rounded-xl" />
+                    {/* Inner border line */}
+                    <div className="absolute inset-[16px] border border-[#C4714A]/15 rounded-lg" />
 
-                  {/* Corner botanical ornaments */}
-                  {[["top-3 left-3", "rotate-0"], ["top-3 right-3", "rotate-90"], ["bottom-3 left-3", "-rotate-90"], ["bottom-3 right-3", "rotate-180"]].map(([pos, rot], i) => (
-                    <div key={i} className={`absolute ${pos} w-7 h-7 pointer-events-none`}>
-                      <svg viewBox="0 0 28 28" fill="none" className={`w-full h-full ${rot} opacity-40`}>
-                        <path d="M2 2 C2 2, 14 2, 14 14" stroke="#9C8470" strokeWidth="0.8" fill="none"/>
-                        <path d="M2 2 C8 2, 2 8, 2 14" stroke="#9C8470" strokeWidth="0.8" fill="none"/>
-                        <circle cx="4" cy="4" r="1.2" fill="#C4714A" opacity="0.5"/>
-                        <path d="M6 2 C6 2, 6 6, 10 6" stroke="#C4714A" strokeWidth="0.6" fill="none" opacity="0.5"/>
-                      </svg>
-                    </div>
-                  ))}
+                    {/* Corner botanical ornaments */}
+                    {[["top-3 left-3", "rotate-0"], ["top-3 right-3", "rotate-90"], ["bottom-3 left-3", "-rotate-90"], ["bottom-3 right-3", "rotate-180"]].map(([pos, rot], i) => (
+                      <div key={i} className={`absolute ${pos} w-7 h-7`}>
+                        <svg viewBox="0 0 28 28" fill="none" className={`w-full h-full ${rot} opacity-40`}>
+                          <path d="M2 2 C2 2, 14 2, 14 14" stroke="#9C8470" strokeWidth="0.8" fill="none" />
+                          <path d="M2 2 C8 2, 2 8, 2 14" stroke="#9C8470" strokeWidth="0.8" fill="none" />
+                          <circle cx="4" cy="4" r="1.2" fill="#C4714A" opacity="0.5" />
+                          <path d="M6 2 C6 2, 6 6, 10 6" stroke="#C4714A" strokeWidth="0.6" fill="none" opacity="0.5" />
+                        </svg>
+                      </div>
+                    ))}
 
-                  {/* Card content */}
-                  <div className="relative z-10 px-8 py-6 md:px-12 md:py-8 flex flex-col items-center text-center gap-3 md:gap-4">
+                    {/* Shimmer sweep */}
+                    <motion.div
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ repeat: Infinity, duration: 4, delay: 2, ease: "easeInOut" }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/12 to-transparent skew-x-12"
+                    />
+                  </div>
+
+                  {/* Card content (NOT clipped; prevents text cropping on mobile) */}
+                  <div className="relative z-10 px-5 pt-9 pb-6 md:px-12 md:py-8 flex flex-col items-center text-center gap-2.5 md:gap-4">
                     {/* Top ornamental divider */}
                     <div className="flex items-center gap-3 w-full max-w-[200px]">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#9C8470]/50" />
@@ -680,7 +699,7 @@ export default function App() {
                         transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
                       >
                         <svg viewBox="0 0 16 16" className="w-3 h-3 opacity-50" fill="#C4714A">
-                          <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z"/>
+                          <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z" />
                         </svg>
                       </motion.div>
                       <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#9C8470]/50" />
@@ -705,23 +724,23 @@ export default function App() {
 
                     {/* Title */}
                     <div className="space-y-0.5">
-                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.5em] text-[#9C8470] font-bold">You are cordially invited to</p>
-                      <h3 className="serif text-2xl md:text-4xl text-[#3D2215] font-light tracking-[0.08em]">The Wedding of</h3>
+                      <p className="text-[8px] md:text-[10px] uppercase tracking-[0.35em] md:tracking-[0.5em] text-[#9C8470] font-bold">You are cordially invited to</p>
+                      <h3 className="serif text-[22px] md:text-4xl text-[#3D2215] font-light tracking-[0.06em] md:tracking-[0.08em]">The Wedding of</h3>
                     </div>
 
                     {/* Names */}
-                    <div className="flex items-center gap-3 md:gap-5">
-                      <span className="script text-3xl md:text-5xl text-[#C4714A] drop-shadow-sm">Hashimi</span>
-                      <Heart size={14} className="text-[#9C8470]/60 shrink-0" fill="currentColor"/>
-                      <span className="script text-3xl md:text-5xl text-[#C4714A] drop-shadow-sm">Zerlin</span>
+                    <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-5 max-w-full px-2">
+                      <span className="script text-[32px] md:text-5xl text-[#C4714A] drop-shadow-sm leading-[1.15]">Hashimi</span>
+                      <Heart size={14} className="text-[#9C8470]/60 shrink-0" fill="currentColor" />
+                      <span className="script text-[32px] md:text-5xl text-[#C4714A] drop-shadow-sm leading-[1.15]">Zerlin</span>
                     </div>
 
                     {/* Date & venue line */}
-                    <div className="flex items-center gap-2 md:gap-4 text-[#6B3D28]/70">
+                    <div className="flex items-center gap-2 md:gap-4 text-[#6B3D28]/70 w-full">
                       <div className="h-px flex-1 bg-[#C9B99A]/40" />
                       <div className="flex flex-col items-center">
                         <span className="serif italic text-[11px] md:text-sm tracking-wider">23 May 2026</span>
-                        <span className="text-[8px] md:text-[9px] uppercase tracking-[0.3em] text-[#9C8470] mt-0.5">Waters Edge · Grand Ballroom</span>
+                        <span className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9C8470] mt-0.5 whitespace-nowrap">Waters Edge · Grand Ballroom</span>
                       </div>
                       <div className="h-px flex-1 bg-[#C9B99A]/40" />
                     </div>
@@ -730,23 +749,16 @@ export default function App() {
                     <div className="flex items-center gap-3 w-full max-w-[200px]">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#9C8470]/50" />
                       <svg viewBox="0 0 16 16" className="w-3 h-3 opacity-40" fill="#C4714A">
-                        <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z"/>
+                        <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z" />
                       </svg>
                       <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#9C8470]/50" />
                     </div>
                   </div>
-
-                  {/* Shimmer sweep */}
-                  <motion.div
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{ repeat: Infinity, duration: 4, delay: 2, ease: "easeInOut" }}
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/12 to-transparent skew-x-12 pointer-events-none"
-                  />
                 </div>
               </motion.div>
 
               {/* ── Envelope front bottom flaps (cover lower half of card) ── */}
-              <div className="absolute bottom-0 left-0 right-0 h-[72%] z-30 rounded-b-[2.5rem] overflow-hidden pointer-events-none">
+              <div className="absolute bottom-0 left-0 right-0 h-[68%] md:h-[72%] z-30 rounded-b-[2.5rem] overflow-hidden pointer-events-none">
                 {/* Left diagonal fold */}
                 <div
                   className="absolute inset-0"
