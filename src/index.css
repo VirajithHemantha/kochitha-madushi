@@ -2,14 +2,14 @@
 @import "tailwindcss";
 
 /* =============================================
-   BOHO COLOR PALETTE
-   Ivory    #F5EFE0  — background / paper
-   Sand     #C9B99A  — light neutral accent
-   Taupe    #9C8470  — mid-tone text/borders
-   Terra    #C4714A  — primary accent (replaces sage)
-   Rust     #A84C2C  — deep accent / hover
-   Umber    #6B3D28  — dark rich tones
-   Sienna   #8B4513  — warm earthy accent
+   LAVENDER & PURPLE PALETTE
+   Vellum   #FDFBF7  — background / paper
+   Mist     #E5E0EA  — light neutral accent
+   Leaf     #8F9779  — soft green accent
+   Lavender #9D7BB0  — primary accent
+   Heather  #7D5B90  — mid accent
+   Plum     #4B2C82  — dark rich tones (wax seal)
+   Orchid   #6B4E71  — warm purple accent
    ============================================= */
 
 @theme {
@@ -18,17 +18,24 @@
   --font-sans: "Inter", sans-serif;
 
   /* Primary accent — drives all `sage` classes */
-  --color-sage:   #C4714A;   /* Terracotta */
+  --color-sage: #9D7BB0;
+  /* Lavender */
 
   /* Background — drives all `paper` classes */
-  --color-paper:  #F5EFE0;   /* Ivory */
+  --color-paper: #FDFBF7;
+  /* Vellum White */
 
-  /* Extended boho palette */
-  --color-sand:   #C9B99A;
-  --color-taupe:  #9C8470;
-  --color-rust:   #A84C2C;
-  --color-umber:  #6B3D28;
-  --color-sienna: #8B4513;
+  /* Extended palette mapped to existing variable names */
+  --color-sand: #E5E0EA;
+  /* Mist */
+  --color-taupe: #8F9779;
+  /* Leaf Green */
+  --color-rust: #7D5B90;
+  /* Heather */
+  --color-umber: #4B2C82;
+  /* Plum */
+  --color-sienna: #6B4E71;
+  /* Orchid */
 }
 
 body {
