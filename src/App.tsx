@@ -252,12 +252,12 @@ function Countdown() {
             <div className="absolute -inset-3 bg-sage/15 rounded-[2rem] blur-xl group-hover:bg-sage/25 transition-all duration-700" />
             <div className="relative bg-white/60 backdrop-blur-xl border border-white/80 rounded-xl md:rounded-[1.5rem] p-2 sm:p-4 md:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-w-[60px] sm:min-w-[70px] md:min-w-[100px] text-center overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sage/30 to-transparent" />
-              <span className="serif text-2xl sm:text-3xl md:text-6xl font-medium text-sage tabular-nums drop-shadow-sm">
+              <span className="serif text-4xl sm:text-5xl md:text-7xl font-bold text-umber tabular-nums drop-shadow-sm">
                 {String(item.value).padStart(2, "0")}
               </span>
             </div>
           </div>
-          <span className="mt-4 text-[9px] md:text-xs uppercase tracking-[0.3em] font-bold text-umber/50">
+          <span className="mt-4 text-[11px] md:text-sm uppercase tracking-[0.3em] font-bold text-umber/80">
             {item.label}
           </span>
         </motion.div>
@@ -376,9 +376,9 @@ function RSVPForm() {
 
   return (
     <div data-no-flip className="w-full cursor-auto">
-      <CheckCircle2 size={24} className="text-sage mb-2 md:mb-4 mx-auto opacity-70 md:w-8 md:h-8" />
-      <h4 className="serif text-2xl md:text-3xl text-sage mb-2 md:mb-3 text-center">RSVP</h4>
-      <p className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-widest mb-4 md:mb-6 text-center leading-relaxed">
+      <CheckCircle2 size={24} className="text-umber mb-2 md:mb-4 mx-auto opacity-80 md:w-8 md:h-8" />
+      <h4 className="serif text-3xl md:text-4xl text-umber font-bold mb-2 md:mb-3 text-center">RSVP</h4>
+      <p className="text-[12px] md:text-sm text-umber/80 font-bold uppercase tracking-widest mb-4 md:mb-6 text-center leading-relaxed">
         Please let us know by
         <br />
         04.06.2026
@@ -390,7 +390,7 @@ function RSVPForm() {
             type="button"
             data-no-flip
             onClick={() => setAttendance("yes")}
-            className={`py-3 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-widest font-bold border transition-colors ${attendance === "yes" ? "bg-sage text-white border-sage" : "bg-white/40 text-sage border-sage/30"
+            className={`py-3 md:py-2.5 rounded-xl text-[11px] md:text-sm uppercase tracking-widest font-bold border transition-colors ${attendance === "yes" ? "bg-umber text-white border-umber" : "bg-white/40 text-umber/80 border-umber/30"
               }`}
           >
             Attending
@@ -399,7 +399,7 @@ function RSVPForm() {
             type="button"
             data-no-flip
             onClick={() => setAttendance("no")}
-            className={`py-3 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-widest font-bold border transition-colors ${attendance === "no" ? "bg-zinc-800 text-white border-zinc-800" : "bg-white/40 text-zinc-700 border-zinc-300/60"
+            className={`py-3 md:py-2.5 rounded-xl text-[11px] md:text-sm uppercase tracking-widest font-bold border transition-colors ${attendance === "no" ? "bg-zinc-800 text-white border-zinc-800" : "bg-white/40 text-zinc-700 border-zinc-300/60"
               }`}
           >
             Not Attending
@@ -411,7 +411,7 @@ function RSVPForm() {
             type="button"
             data-no-flip
             onClick={() => setPartyType("individual")}
-            className={`py-3 md:py-2 rounded-xl text-[10px] md:text-xs uppercase tracking-widest font-bold border transition-colors ${partyType === "individual" ? "bg-sage/90 text-white border-sage" : "bg-white/40 text-sage border-sage/30"
+            className={`py-3 md:py-2 rounded-xl text-[11px] md:text-sm uppercase tracking-widest font-bold border transition-colors ${partyType === "individual" ? "bg-umber/90 text-white border-umber" : "bg-white/40 text-umber/80 border-umber/30"
               }`}
           >
             Individual
@@ -420,7 +420,7 @@ function RSVPForm() {
             type="button"
             data-no-flip
             onClick={() => setPartyType("family")}
-            className={`py-3 md:py-2 rounded-xl text-[10px] md:text-xs uppercase tracking-widest font-bold border transition-colors ${partyType === "family" ? "bg-sage/90 text-white border-sage" : "bg-white/40 text-sage border-sage/30"
+            className={`py-3 md:py-2 rounded-xl text-[11px] md:text-sm uppercase tracking-widest font-bold border transition-colors ${partyType === "family" ? "bg-umber/90 text-white border-umber" : "bg-white/40 text-umber/80 border-umber/30"
               }`}
           >
             Family
@@ -481,7 +481,7 @@ function RSVPForm() {
           type="submit"
           data-no-flip
           disabled={submitting}
-          className="w-full bg-sage text-white py-3 md:py-3 rounded-xl text-[10px] md:text-xs uppercase tracking-widest font-bold disabled:opacity-60"
+          className="w-full bg-umber text-white py-3 md:py-3 rounded-xl text-[12px] md:text-sm uppercase tracking-widest font-bold disabled:opacity-60"
         >
           {submitting ? "Submitting..." : "Submit RSVP"}
         </button>
@@ -599,17 +599,17 @@ export default function App() {
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img src="/1.webp" alt="First Page Background" className="w-full h-full object-cover" fetchpriority="high" decoding="sync" />
             </div>
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
               className="absolute top-12 md:top-24 left-0 right-0 text-center z-10 pointer-events-none"
             >
-              <h1 className="serif text-4xl md:text-6xl text-umber font-light tracking-[0.2em] drop-shadow-md">
+              <h1 className="serif text-4xl md:text-6xl text-umber font-bold md:font-light tracking-[0.2em] drop-shadow-md">
                 Mahela & Himesha
               </h1>
-              <p className="mt-3 text-[10px] md:text-xs uppercase tracking-[0.6em] text-umber/80 font-bold drop-shadow-sm">
+              <p className="mt-3 text-xs md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold drop-shadow-sm">
                 18 June 2026
               </p>
             </motion.div>
@@ -770,7 +770,7 @@ export default function App() {
               {/* premium white envelope material */}
               <div className="absolute inset-0 bg-gradient-to-br from-sage/30 via-white/80 to-sage/40" />
               <div className="absolute inset-0 opacity-15 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
-              
+
               <div className="absolute inset-0 opacity-30 pointer-events-none mix-blend-multiply">
                 <img src="/2.webp" className="w-full h-full object-cover" alt="Watermark" loading="lazy" />
               </div>
@@ -805,7 +805,7 @@ export default function App() {
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-sage/20 to-sage/30" />
                 <div className="absolute inset-0 opacity-15 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
-                
+
                 <div className="absolute inset-0 opacity-30 pointer-events-none mix-blend-multiply">
                   <img src="/2.webp" className="w-full h-full object-cover" style={{ objectPosition: "top" }} alt="Watermark" loading="lazy" />
                 </div>
@@ -828,10 +828,10 @@ export default function App() {
                     className="flex flex-col items-center gap-4 mt-8 md:mt-12 group"
                   >
                     <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-500">
-                      <img 
-                        src="/seal.png" 
-                        alt="Wax Seal" 
-                        className="w-full h-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.4)]" 
+                      <img
+                        src="/seal.png"
+                        alt="Wax Seal"
+                        className="w-full h-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.4)]"
                       />
                     </div>
 
@@ -872,43 +872,43 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={isOpened ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 1, duration: 1 }}
-            className="flex items-center justify-center gap-4 text-sage/60"
+            className="flex items-center justify-center gap-4 text-umber/80"
           >
             <div className="h-px w-8 md:w-16 bg-current opacity-30" />
-            <p className="text-[10px] md:text-sm uppercase tracking-[0.6em] font-bold">With joy in our hearts</p>
+            <p className="text-[9px] md:text-xs uppercase tracking-[0.6em] font-bold">With joy in our hearts</p>
             <div className="h-px w-8 md:w-16 bg-current opacity-30" />
           </motion.div>
 
           <h1 className="flex flex-col items-center px-2">
-            <span className="serif italic text-3xl sm:text-5xl md:text-[8rem] text-sage font-light leading-tight drop-shadow-sm mb-1 md:mb-6">
+            <span className="serif italic text-3xl sm:text-5xl md:text-[8rem] text-umber font-bold leading-tight drop-shadow-sm mb-1 md:mb-6">
               You're Invited!
             </span>
-            <span className="serif text-sm sm:text-base md:text-4xl text-umber tracking-[0.15em] md:tracking-[0.3em] uppercase font-light">
+            <span className="serif text-sm sm:text-base md:text-4xl text-umber tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold">
               to the wedding of
             </span>
           </h1>
 
           <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 md:gap-16 mt-4 md:mt-8 relative w-full px-2">
-            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-32 bg-sage/5 blur-3xl rounded-full" />
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-32 bg-umber/5 blur-3xl rounded-full" />
 
-            <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-sage drop-shadow-lg relative z-10 leading-none">
+            <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-umber font-bold drop-shadow-lg relative z-10 leading-none">
               Mahela
             </motion.h2>
 
             <div className="relative flex items-center justify-center shrink-0">
-              <div className="h-px w-6 md:w-24 bg-sage/20 hidden md:block" />
+              <div className="h-px w-6 md:w-24 bg-umber/20 hidden md:block" />
               <div className="relative mx-1 md:mx-4">
-                <Heart className="text-sage/40 w-5 h-5 sm:w-7 sm:h-7 md:w-10 md:h-10 animate-pulse" fill="currentColor" />
+                <Heart className="text-umber/60 w-5 h-5 sm:w-7 sm:h-7 md:w-10 md:h-10 animate-pulse" fill="currentColor" />
                 <motion.div
                   animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="absolute inset-0 bg-sage/20 blur-xl rounded-full"
+                  className="absolute inset-0 bg-umber/20 blur-xl rounded-full"
                 />
               </div>
-              <div className="h-px w-6 md:w-24 bg-sage/20 hidden md:block" />
+              <div className="h-px w-6 md:w-24 bg-umber/20 hidden md:block" />
             </div>
 
-            <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-sage drop-shadow-lg relative z-10 leading-none">
+            <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-umber font-bold drop-shadow-lg relative z-10 leading-none">
               Himesha
             </motion.h2>
           </div>
@@ -917,7 +917,7 @@ export default function App() {
         </motion.div>
 
         {/* Updated premium envelope section */}
-        <div className="flex justify-center w-full mb-8 mt-12 md:mt-28">
+        <div className="flex justify-center w-full mb-8 mt-24 md:mt-32">
           {!isOpened ? (
             <div className="w-full max-w-3xl relative h-[340px] sm:h-[380px] md:h-[460px]" />
           ) : (
@@ -970,7 +970,7 @@ export default function App() {
               <div className="absolute bottom-0 left-0 right-0 h-[64%] sm:h-[66%] md:h-[68%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_24px_70px_-12px_rgba(61,34,21,0.55)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-umber via-rust/35 to-sienna/55" />
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
-                
+
                 <div className="absolute inset-0 opacity-20 pointer-events-none">
                   <img src="/2.webp" className="w-full h-full object-cover object-bottom" alt="Watermark" loading="lazy" />
                 </div>
@@ -1003,7 +1003,7 @@ export default function App() {
                   }}
                 >
                   <div className="absolute inset-0 opacity-25 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
-                  
+
                   <div className="absolute inset-0 opacity-20 pointer-events-none">
                     <img src="/2.webp" className="w-full h-full object-cover" style={{ objectPosition: "top" }} alt="Watermark" loading="lazy" />
                   </div>
@@ -1090,34 +1090,34 @@ export default function App() {
 
                     {/* hosting families */}
                     <div className="space-y-0.5">
-                      <p className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-taupe font-medium">
+                      <p className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-medium">
                         Loving Son of
                       </p>
-                      <p className="serif text-[9px] sm:text-[10px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-normal leading-relaxed">
+                      <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
                         MR. A.C.K.P. KULARATNE & MRS. J.A.C.P. JAYAKODY
                       </p>
-                      <p className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-taupe font-medium">
+                      <p className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-medium">
                         &
                       </p>
-                      <p className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-taupe font-medium">
+                      <p className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-medium">
                         Loving Daughter of
                       </p>
-                      <p className="serif text-[9px] sm:text-[10px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-normal leading-relaxed">
+                      <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
                         MR. M. WEERASINGHE & LATE MRS. T.M.M. THENNAKOON
                       </p>
                     </div>
 
-                    <p className="serif mb-2.5 sm:mb-0 text-[10px] sm:text-[11px] md:text-[14px] uppercase tracking-[0.2em] text-taupe/80 font-normal leading-relaxed max-w-[200px] md:max-w-xs">
+                    <p className="serif mb-2.5 sm:mb-0 text-[11px] sm:text-[12px] md:text-[14px] uppercase tracking-[0.2em] text-taupe/80 font-bold md:font-normal leading-relaxed max-w-[220px] md:max-w-xs">
                       REQUEST THE PLEASURE OF YOUR COMPANY TO CELEBRATE THE MARRIAGE OF THEIR CHILDREN
                     </p>
 
                     {/* couple names */}
                     <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 max-w-full px-2">
-                      <span className="script text-[26px] sm:text-[32px] md:text-[48px] text-sage drop-shadow-sm leading-[1.1]">
+                      <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
                         Mahela
                       </span>
                       <span className="text-taupe/50 text-sm md:text-xl font-serif">&amp;</span>
-                      <span className="script text-[26px] sm:text-[32px] md:text-[48px] text-sage drop-shadow-sm leading-[1.1]">
+                      <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
                         Himesha
                       </span>
                     </div>
@@ -1126,16 +1126,16 @@ export default function App() {
                     <div className="flex items-center gap-2 sm:gap-3 text-umber/70 w-full mt-1">
                       <div className="h-px flex-1 bg-sand/45" />
                       <div className="flex flex-col items-center gap-0.5">
-                        <span className="serif text-[22px] sm:text-[28px] md:text-4xl text-umber font-medium leading-none">
+                        <span className="serif text-[28px] sm:text-[32px] md:text-4xl text-umber font-bold md:font-medium leading-none">
                           18
                         </span>
-                        <span className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.3em] text-taupe font-bold">
+                        <span className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-taupe font-bold">
                           JUNE · THURSDAY
                         </span>
-                        <span className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-taupe font-bold">
+                        <span className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-bold">
                           6:00 PM · 2026
                         </span>
-                        <span className="serif mt-1 block max-w-[200px] px-2 text-[10px] sm:text-[11px] md:text-[12px] uppercase tracking-[0.12em] text-umber/75 text-center leading-snug break-words font-medium">
+                        <span className="serif mt-1 block max-w-[220px] px-2 text-[11px] sm:text-[12px] md:text-[13px] uppercase tracking-[0.12em] text-umber/75 text-center leading-snug break-words font-bold md:font-medium">
                           PABAVEE REGENCY HOTEL, GAMPAHA
                         </span>
                       </div>
@@ -1185,7 +1185,7 @@ export default function App() {
 
                 <div className="absolute top-0 left-0 right-0 h-7 bg-gradient-to-b from-umber/25 to-transparent" />
 
-                <div 
+                <div
                   className="absolute inset-0 opacity-20 pointer-events-none"
                   style={{ clipPath: "polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%)" }}
                 >
@@ -1213,14 +1213,14 @@ export default function App() {
                 </div>
                 <div className="relative z-10 space-y-2 md:space-y-8 scale-[0.9] md:scale-100">
                   <div className="space-y-1">
-                    <span className="serif italic text-[14px] md:text-2xl text-sage/70">Our Wedding Date</span>
-                    <div className="w-full h-px bg-sage/20" />
+                    <span className="serif italic text-[18px] md:text-3xl text-umber/90 font-bold">Our Wedding Date</span>
+                    <div className="w-full h-px bg-umber/20" />
                   </div>
 
                   <div className="flex flex-col items-center">
-                    <p className="text-[8px] md:text-xs uppercase tracking-[0.4em] text-zinc-400 font-black mb-1 md:mb-2">Thursday</p>
-                    <div className="relative inline-block px-6 md:px-8 py-1 md:py-2 border-y border-sage/30">
-                      <p className="serif text-5xl md:text-8xl font-medium text-sage leading-none">18</p>
+                    <p className="text-[11px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-black mb-1 md:mb-2">Thursday</p>
+                    <div className="relative inline-block px-6 md:px-8 py-1 md:py-2 border-y border-umber/30">
+                      <p className="serif text-6xl md:text-9xl font-bold text-umber leading-none">18</p>
                       <motion.div
                         animate={{ opacity: [0.4, 1, 0.4] }}
                         transition={{ repeat: Infinity, duration: 2 }}
@@ -1229,11 +1229,11 @@ export default function App() {
                         <Sparkles size={12} className="md:w-4 md:h-4" />
                       </motion.div>
                     </div>
-                    <p className="serif text-sm md:text-2xl font-light tracking-[0.2em] mt-2 md:mt-3">JUNE</p>
+                    <p className="serif text-lg md:text-3xl font-bold tracking-[0.2em] mt-2 md:mt-3 text-umber">JUNE</p>
                   </div>
 
                   <div className="pt-1">
-                    <p className="text-[7px] md:text-xs uppercase tracking-[0.4em] md:tracking-[0.5em] font-black text-sage/40">
+                    <p className="text-[10px] md:text-sm uppercase tracking-[0.4em] md:tracking-[0.5em] font-black text-umber/70">
                       Twenty Twenty Six
                     </p>
                   </div>
@@ -1261,11 +1261,11 @@ export default function App() {
                   </div>
                   <div className="relative z-10 space-y-3 md:space-y-6">
                     <div className="flex flex-col items-center gap-1">
-                      <p className="serif italic text-lg md:text-2xl text-umber group-hover:scale-110 transition-transform">Kindly</p>
-                      <h3 className="serif text-2xl md:text-4xl tracking-[0.3em] font-medium text-umber">RSVP</h3>
+                      <p className="serif italic text-2xl md:text-3xl text-umber font-bold group-hover:scale-110 transition-transform">Kindly</p>
+                      <h3 className="serif text-4xl md:text-5xl tracking-[0.3em] font-bold text-umber">RSVP</h3>
                     </div>
 
-                    <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-zinc-400 font-bold mt-1">by 04.06.2026</p>
+                    <p className="text-[12px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-bold mt-1">by 04.06.2026</p>
                   </div>
                 </div>
               }
@@ -1357,7 +1357,7 @@ export default function App() {
               front={
                 <div className="w-full h-full relative group overflow-hidden">
                   <img
-                    src="/time.png"
+                    src="/images/3.jpeg"
                     alt="Timeline"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     referrerPolicy="no-referrer"
@@ -1407,10 +1407,40 @@ export default function App() {
 
         <div className="w-full max-w-4xl mx-auto px-4 mt-8 md:mt-16">
           <div className="text-center mb-6 md:mb-10">
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-sage/60 font-bold mb-2">Countdown to our day</p>
-            <div className="h-px w-12 bg-sage/20 mx-auto" />
+            <p className="text-[12px] md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold mb-2">Countdown to our day</p>
+            <div className="h-px w-12 bg-umber/20 mx-auto" />
           </div>
           <Countdown />
+        </div>
+
+        {/* Premium Moments Gallery */}
+        <div className="w-full max-w-5xl mx-auto px-4 mt-16 md:mt-24 mb-4 md:mb-12">
+          <div className="text-center mb-8 md:mb-16">
+            <p className="text-[12px] md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold mb-2">Moments</p>
+            <div className="h-px w-12 bg-umber/20 mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 px-2 md:px-0">
+            {[1, 2, 4, 5].map((num, idx) => (
+              <motion.div
+                key={num}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className={`relative group overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-xl border-[3px] border-white/80 aspect-[3/4] md:aspect-[4/5] ${idx % 2 === 1 ? "mt-8 md:mt-12" : "mb-8 md:mb-12"
+                  }`}
+              >
+                <img
+                  src={`/images/${num}.jpeg`}
+                  alt={`Moment ${num}`}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-umber/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <motion.footer
@@ -1419,15 +1449,15 @@ export default function App() {
           transition={{ duration: 1.5, delay: 2 }}
           className="text-center pt-12 pb-12 space-y-6"
         >
-          <div className="flex items-center justify-center gap-6 text-sage/40">
+          <div className="flex items-center justify-center gap-6 text-umber/60">
             <div className="h-px w-16 bg-current" />
-            <span className="text-xs uppercase tracking-[0.6em] font-medium">Est. 2026</span>
+            <span className="text-sm uppercase tracking-[0.6em] font-bold">Est. 2026</span>
             <div className="h-px w-16 bg-current" />
           </div>
-          <p className="serif italic text-zinc-500 text-xl max-w-lg mx-auto leading-relaxed">
+          <p className="serif italic text-umber/90 text-2xl font-bold max-w-lg mx-auto leading-relaxed px-4">
             "Love brought us together, made more beautiful with your presence"
           </p>
-          <p className="serif text-sage/60 text-sm italic">We can't wait to celebrate with you</p>
+          <p className="serif text-umber/80 text-lg font-bold italic">We can't wait to celebrate with you</p>
 
         </motion.footer>
       </motion.main>
