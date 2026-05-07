@@ -276,7 +276,7 @@ type GuestEntry = {
 };
 
 function RSVPForm() {
-  const endpoint = (import.meta as any).env?.VITE_RSVP_ENDPOINT as string | undefined;
+  const endpoint = "https://script.google.com/macros/s/AKfycbzNTEBAHz6dwBesgZN1ZMzbbtyo2pefiZEkj1BM770pUwUWlFxAPnusvRxzQB0z2J5xMQ/exec";
 
   const [attendance, setAttendance] = useState<Attendance>("yes");
   const [partyType, setPartyType] = useState<PartyType>("individual");
@@ -486,11 +486,7 @@ function RSVPForm() {
           {submitting ? "Submitting..." : "Submit RSVP"}
         </button>
 
-        {!endpoint && (
-          <p className="text-[10px] md:text-[10px] text-zinc-500 leading-relaxed">
-            Admin setup needed: set <span className="font-bold">VITE_RSVP_ENDPOINT</span> to your Google Apps Script URL.
-          </p>
-        )}
+
       </form>
     </div>
   );
