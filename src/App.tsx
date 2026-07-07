@@ -186,8 +186,8 @@ function RealisticPetal({ size = 20, className = "" }: { size?: number; classNam
       <svg width="100%" height="100%" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="petalGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#9D7BB0" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#7D5B90" stopOpacity="0.65" />
+            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#B89C5D" stopOpacity="0.65" />
           </radialGradient>
         </defs>
         <path
@@ -201,7 +201,7 @@ function RealisticPetal({ size = 20, className = "" }: { size?: number; classNam
 }
 
 function Countdown() {
-  const targetDate = new Date("2026-06-18T18:00:00").getTime();
+  const targetDate = new Date("2026-07-31T09:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -603,10 +603,10 @@ export default function App() {
               className="absolute top-12 md:top-24 left-0 right-0 text-center z-10 pointer-events-none"
             >
               <h1 className="serif text-4xl md:text-6xl text-umber font-bold md:font-light tracking-[0.2em] drop-shadow-md">
-                Mahela & Himesha
+                Kochitha & Madushi
               </h1>
               <p className="mt-3 text-xs md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold drop-shadow-sm">
-                18 June 2026
+                31 July 2026
               </p>
             </motion.div>
 
@@ -641,7 +641,7 @@ export default function App() {
                   opacity: [0.6, 0.9, 0.6],
                 }}
                 transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-[30%] -left-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(196,113,74,0.45)_0%,transparent_60%)] blur-3xl"
+                className="absolute -top-[30%] -left-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.45)_0%,transparent_60%)] blur-3xl"
               />
               <motion.div
                 animate={{
@@ -650,7 +650,7 @@ export default function App() {
                   opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-[30%] -right-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(156,132,112,0.4)_0%,transparent_60%)] blur-3xl"
+                className="absolute -bottom-[30%] -right-[20%] w-[140%] h-[140%] rounded-full bg-[radial-gradient(circle,rgba(184,156,93,0.4)_0%,transparent_60%)] blur-3xl"
               />
 
               {!reduceEffects &&
@@ -680,9 +680,9 @@ export default function App() {
                       <Flower2 className="text-sage/20 w-4 h-4 md:w-6 md:h-6" />
                     ) : (
                       <div
-                        className="rounded-full shadow-[0_0_15px_rgba(196,113,74,0.4)]"
+                        className="rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)]"
                         style={{
-                          backgroundColor: i % 2 === 0 ? "#C4714A" : "#A84C2C",
+                          backgroundColor: i % 2 === 0 ? "#D4AF37" : "#997A21",
                           width: Math.random() * 6 + 2 + "px",
                           height: Math.random() * 6 + 2 + "px",
                           filter: `blur(${Math.random() * 1}px)`,
@@ -733,7 +733,7 @@ export default function App() {
                     key={`bokeh-${i}`}
                     className="absolute rounded-full mix-blend-soft-light"
                     style={{
-                      backgroundColor: i % 2 === 0 ? "#9C8470" : "#F5EFE0",
+                      backgroundColor: i % 2 === 0 ? "#113626" : "#F3E6D0",
                       opacity: 0.3,
                       width: Math.random() * 150 + 100 + "px",
                       height: Math.random() * 150 + 100 + "px",
@@ -888,7 +888,7 @@ export default function App() {
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-32 bg-umber/5 blur-3xl rounded-full" />
 
             <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-umber font-bold drop-shadow-lg relative z-10 leading-none">
-              Mahela
+              Kochitha
             </motion.h2>
 
             <div className="relative flex items-center justify-center shrink-0">
@@ -905,7 +905,7 @@ export default function App() {
             </div>
 
             <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-umber font-bold drop-shadow-lg relative z-10 leading-none">
-              Himesha
+              Madushi
             </motion.h2>
           </div>
 
@@ -963,7 +963,7 @@ export default function App() {
               </div>
 
               {/* envelope body back */}
-              <div className="absolute bottom-0 left-0 right-0 h-[64%] sm:h-[66%] md:h-[68%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_24px_70px_-12px_rgba(61,34,21,0.55)]">
+              <div className="absolute bottom-0 left-0 right-0 h-[64%] sm:h-[66%] md:h-[68%] rounded-b-[2.5rem] overflow-hidden z-10 shadow-[0_24px_70px_-12px_rgba(17,54,38,0.55)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-umber via-rust/35 to-sienna/55" />
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
 
@@ -1090,7 +1090,7 @@ export default function App() {
                         Loving Son of
                       </p>
                       <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
-                        MR. A.C.K.P. KULARATNE & MRS. J.A.C.P. JAYAKODY
+                        MR. ROHANA SISIRA KUMARA PAHALANAAYAKA & MRS. H.A. ISANKA UDAYANGANI
                       </p>
                       <p className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-medium">
                         &
@@ -1099,7 +1099,7 @@ export default function App() {
                         Loving Daughter of
                       </p>
                       <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
-                        MR. M. WEERASINGHE & LATE MRS. T.M.M. THENNAKOON
+                        MR. RANBANDA & MRS. PREMALATHA WANNIARACHCHI
                       </p>
                     </div>
 
@@ -1110,11 +1110,11 @@ export default function App() {
                     {/* couple names */}
                     <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 max-w-full px-2">
                       <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
-                        Mahela
+                        Kochitha
                       </span>
                       <span className="text-taupe/50 text-sm md:text-xl font-serif">&amp;</span>
                       <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
-                        Himesha
+                        Madushi
                       </span>
                     </div>
 
@@ -1123,16 +1123,16 @@ export default function App() {
                       <div className="h-px flex-1 bg-sand/45" />
                       <div className="flex flex-col items-center gap-0.5">
                         <span className="serif text-[28px] sm:text-[32px] md:text-4xl text-umber font-bold md:font-medium leading-none">
-                          18
+                          31
                         </span>
                         <span className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-taupe font-bold">
-                          JUNE · THURSDAY
+                          JULY · FRIDAY
                         </span>
                         <span className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-bold">
-                          6:00 PM · 2026
+                          9:00 AM · 2026
                         </span>
                         <span className="serif mt-1 block max-w-[220px] px-2 text-[11px] sm:text-[12px] md:text-[13px] uppercase tracking-[0.12em] text-umber/75 text-center leading-snug break-words font-bold md:font-medium">
-                          PABAVEE REGENCY HOTEL, GAMPAHA
+                          MANORA HERITAGE, DAMBADENIYA
                         </span>
                       </div>
                       <div className="h-px flex-1 bg-sand/45" />
@@ -1214,18 +1214,18 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-col items-center">
-                    <p className="text-[11px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-black mb-1 md:mb-2">Thursday</p>
+                    <p className="text-[11px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-black mb-1 md:mb-2">Friday</p>
                     <div className="relative inline-block px-6 md:px-8 py-1 md:py-2 border-y border-umber/30">
-                      <p className="serif text-6xl md:text-9xl font-bold text-umber leading-none">18</p>
+                      <p className="serif text-6xl md:text-9xl font-bold text-umber leading-none">31</p>
                       <motion.div
                         animate={{ opacity: [0.4, 1, 0.4] }}
                         transition={{ repeat: Infinity, duration: 2 }}
-                        className="absolute -top-1 -right-1 text-[#A84C2C]"
+                        className="absolute -top-1 -right-1 text-[#D4AF37]"
                       >
                         <Sparkles size={12} className="md:w-4 md:h-4" />
                       </motion.div>
                     </div>
-                    <p className="serif text-lg md:text-3xl font-bold tracking-[0.2em] mt-2 md:mt-3 text-umber">JUNE</p>
+                    <p className="serif text-lg md:text-3xl font-bold tracking-[0.2em] mt-2 md:mt-3 text-umber">JULY</p>
                   </div>
 
                   <div className="pt-1">
@@ -1261,7 +1261,7 @@ export default function App() {
                       <h3 className="serif text-4xl md:text-5xl tracking-[0.3em] font-bold text-umber">RSVP</h3>
                     </div>
 
-                    <p className="text-[12px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-bold mt-1">by 04.06.2026</p>
+                    <p className="text-[12px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-bold mt-1">by 10.07.2026</p>
                   </div>
                 </div>
               }
@@ -1285,8 +1285,8 @@ export default function App() {
               front={
                 <div className="w-full h-full relative group">
                   <img
-                    src="https://www.watersedge.lk/wp-content/uploads/2026/01/004A2024-1024x1536.jpg"
-                    alt="Waters Edge Grand Ballroom"
+                    src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAH37F2oyP2OaRKksIFRRiK2bJVLgEHv0yy9Of1miAGGXHBUwioYfdWHYcjucu8PNJ395ecrpcuG1NN63zg0BBflNIDMd1PATaUI8JG29vcuXben4JxlAzH3tlNzxIU11NeuzXyCIPUv1dlv=w408-h306-k-no"
+                    alt="Manora Heritage"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
@@ -1297,16 +1297,16 @@ export default function App() {
                       The Location
                     </p>
                     <h3 className="serif text-2xl md:text-5xl text-sage leading-tight drop-shadow-sm font-medium">
-                      Pabavee Regency
+                      Manora Heritage
                       <br />
-                      Hotel, Gampaha
+                      Dambadeniya
                     </h3>
 
                     <motion.button
                       data-no-flip
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => window.open("https://maps.app.goo.gl/Bb5k8Gs9iEVmN8126", "_blank")}
+                      onClick={() => window.open("https://maps.app.goo.gl/kPNSm9UXHKgosnRW6", "_blank")}
                       className="mt-3 md:mt-5 px-5 py-2 md:px-7 md:py-3 bg-sage text-white rounded-full text-[9px] md:text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
                     >
                       View Map
@@ -1315,23 +1315,21 @@ export default function App() {
 
                   <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-sage flex items-center gap-3 bg-white/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/60 shadow-lg">
                     <MapPin className="text-sage animate-bounce" size={16} />
-                    <p className="serif text-[10px] md:text-sm tracking-[0.2em] font-bold uppercase">Pabavee Regency Hotel</p>
+                    <p className="serif text-[10px] md:text-sm tracking-[0.2em] font-bold uppercase">Manora Heritage</p>
                   </div>
                 </div>
               }
               back={
                 <>
                   <MapPin size={24} className="text-sage mb-4 md:mb-6 opacity-70 md:w-9 md:h-9" />
-                  <h4 className="serif text-2xl md:text-4xl text-sage mb-2 md:mb-4">Pabavee Regency Hotel</h4>
+                  <h4 className="serif text-2xl md:text-4xl text-sage mb-2 md:mb-4">Manora Heritage</h4>
                   <p className="text-[10px] md:text-sm text-zinc-500 uppercase tracking-widest leading-loose mb-4 md:mb-6">
-                    No. 150, Mudungoda,
-                    <br />
-                    Gampaha
+                    Dambadeniya
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => window.open("https://maps.app.goo.gl/Bb5k8Gs9iEVmN8126", "_blank")}
+                    onClick={() => window.open("https://maps.app.goo.gl/kPNSm9UXHKgosnRW6", "_blank")}
                     className="px-6 py-2 md:px-8 md:py-3 bg-sage text-white rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
                   >
                     View Map
@@ -1385,13 +1383,13 @@ export default function App() {
 
                   <div className="w-full max-w-sm space-y-4 md:space-y-6 text-left">
                     <div className="flex items-start gap-2 md:gap-4">
-                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">6:00 PM</span>
+                      <span className="serif text-sage font-bold text-[10px] md:text-base w-12 md:w-20 text-right shrink-0 pt-1">10:02 AM</span>
                       <div className="w-px h-full bg-sage/30 relative mt-2 -ml-[1px] md:-ml-2 shrink-0">
                         <div className="absolute top-0 -left-[3px] w-2 h-2 rounded-full bg-sage" />
                       </div>
                       <div>
                         <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider">Poruwa Ceremony</p>
-                        <p className="serif text-[10px] md:text-xs italic text-zinc-500">Followed by Reception</p>
+                        <p className="serif text-[10px] md:text-xs italic text-zinc-500">Event Time: 9am - 4pm</p>
                       </div>
                     </div>
                   </div>
@@ -1409,35 +1407,7 @@ export default function App() {
           <Countdown />
         </div>
 
-        {/* Premium Moments Gallery */}
-        <div className="w-full max-w-5xl mx-auto px-4 mt-16 md:mt-24 mb-4 md:mb-12">
-          <div className="text-center mb-8 md:mb-16">
-            <p className="text-[12px] md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold mb-2">Moments</p>
-            <div className="h-px w-12 bg-umber/20 mx-auto" />
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 px-2 md:px-0">
-            {[1, 2, 4, 5].map((num, idx) => (
-              <motion.div
-                key={num}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative group overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-xl border-[3px] border-white/80 aspect-[3/4] md:aspect-[4/5] ${idx % 2 === 1 ? "mt-8 md:mt-12" : "mb-8 md:mb-12"
-                  }`}
-              >
-                <img
-                  src={`/images/${num}.jpeg`}
-                  alt={`Moment ${num}`}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-umber/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.div>
-            ))}
-          </div>
-        </div>
 
         <motion.footer
           initial={{ opacity: 0 }}

@@ -2,14 +2,14 @@
 @import "tailwindcss";
 
 /* =============================================
-   LAVENDER & PURPLE PALETTE
-   Vellum   #FDFBF7  — background / paper
-   Mist     #E5E0EA  — light neutral accent
-   Leaf     #8F9779  — soft green accent
-   Lavender #9D7BB0  — primary accent
-   Heather  #7D5B90  — mid accent
-   Plum     #4B2C82  — dark rich tones (wax seal)
-   Orchid   #6B4E71  — warm purple accent
+   DARK GREEN & GOLD PALETTE
+   Vellum   #FCFAF5  — background / paper
+   Mist     #F3E6D0  — light neutral accent
+   Leaf     #B89C5D  — soft gold accent
+   Gold     #D4AF37  — primary accent
+   LightGrn #2E5B46  — mid accent
+   DarkGrn  #113626  — dark rich tones (wax seal)
+   DarkGold #997A21  — warm accent
    ============================================= */
 
 @theme {
@@ -18,29 +18,29 @@
   --font-sans: "Inter", sans-serif;
 
   /* Primary accent — drives all `sage` classes */
-  --color-sage: #9D7BB0;
-  /* Lavender */
+  --color-sage: #D4AF37;
+  /* Gold */
 
   /* Background — drives all `paper` classes */
-  --color-paper: #FDFBF7;
+  --color-paper: #FCFAF5;
   /* Vellum White */
 
   /* Extended palette mapped to existing variable names */
-  --color-sand: #E5E0EA;
+  --color-sand: #F3E6D0;
   /* Mist */
-  --color-taupe: #8F9779;
-  /* Leaf Green */
-  --color-rust: #7D5B90;
-  /* Heather */
-  --color-umber: #4B2C82;
-  /* Plum */
-  --color-sienna: #6B4E71;
-  /* Orchid */
+  --color-taupe: #B89C5D;
+  /* Muted Gold */
+  --color-rust: #2E5B46;
+  /* Light Green */
+  --color-umber: #113626;
+  /* Dark Green */
+  --color-sienna: #997A21;
+  /* Dark Gold */
 }
 
 body {
   background-color: var(--color-paper);
-  color: #3D2B1F;
+  color: #113626;
   font-family: var(--font-sans);
 }
 
