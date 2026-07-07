@@ -603,7 +603,7 @@ export default function App() {
               className="absolute top-12 md:top-24 left-0 right-0 text-center z-10 pointer-events-none"
             >
               <h1 className="serif text-4xl md:text-6xl text-umber font-bold md:font-light tracking-[0.2em] drop-shadow-md">
-                Kochitha & Madushi
+                Koshitha & Madushi
               </h1>
               <p className="mt-3 text-xs md:text-sm uppercase tracking-[0.6em] text-umber/80 font-bold drop-shadow-sm">
                 31 July 2026
@@ -888,7 +888,7 @@ export default function App() {
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-32 bg-umber/5 blur-3xl rounded-full" />
 
             <motion.h2 whileHover={{ scale: 1.05 }} className="script text-[13vw] sm:text-6xl md:text-9xl text-umber font-bold drop-shadow-lg relative z-10 leading-none">
-              Kochitha
+              Koshitha
             </motion.h2>
 
             <div className="relative flex items-center justify-center shrink-0">
@@ -1110,7 +1110,7 @@ export default function App() {
                     {/* couple names */}
                     <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 max-w-full px-2">
                       <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
-                        Kochitha
+                        Koshitha
                       </span>
                       <span className="text-taupe/50 text-sm md:text-xl font-serif">&amp;</span>
                       <span className="script text-[32px] sm:text-[38px] md:text-[48px] font-bold md:font-normal text-sage drop-shadow-sm leading-[1.1]">
