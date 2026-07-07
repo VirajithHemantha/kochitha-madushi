@@ -276,7 +276,7 @@ type GuestEntry = {
 };
 
 function RSVPForm() {
-  const endpoint = "https://script.google.com/macros/s/AKfycbzNTEBAHz6dwBesgZN1ZMzbbtyo2pefiZEkj1BM770pUwUWlFxAPnusvRxzQB0z2J5xMQ/exec";
+  const endpoint = "https://script.google.com/macros/s/AKfycbz7VM22Ii5JB_Sr6yeGQX3CHh5cIluoln_EGJX1CeUKPaMHWN18J_vg7oYh-FVWC3n-Ow/exec";
 
   const [attendance, setAttendance] = useState<Attendance>("yes");
   const [partyType, setPartyType] = useState<PartyType>("individual");
@@ -379,9 +379,9 @@ function RSVPForm() {
       <CheckCircle2 size={24} className="text-umber mb-2 md:mb-4 mx-auto opacity-80 md:w-8 md:h-8" />
       <h4 className="serif text-3xl md:text-4xl text-umber font-bold mb-2 md:mb-3 text-center">RSVP</h4>
       <p className="text-[12px] md:text-sm text-umber/80 font-bold uppercase tracking-widest mb-4 md:mb-6 text-center leading-relaxed">
-        Please let us know by
+        RSVP Ended at
         <br />
-        04.06.2026
+        July 15
       </p>
 
       <form onSubmit={submit} className="space-y-4 md:space-y-4 px-1 md:px-2">
@@ -1090,7 +1090,7 @@ export default function App() {
                         Loving Son of
                       </p>
                       <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
-                        MR. ROHANA SISIRA KUMARA PAHALANAAYAKA & MRS. H.A. ISANKA UDAYANGANI
+                        MR. P.A.R.S.K. PAHALANAYAKA & MRS. H.A.I.U. RANASINGHA
                       </p>
                       <p className="text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-taupe font-medium">
                         &
@@ -1099,7 +1099,7 @@ export default function App() {
                         Loving Daughter of
                       </p>
                       <p className="serif text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] text-umber font-bold md:font-normal leading-relaxed">
-                        MR. RANBANDA & MRS. PREMALATHA WANNIARACHCHI
+                        MR. R.B. SENANAYAKE & MRS. W.A.P. WANNIARACHCHI
                       </p>
                     </div>
 
@@ -1261,7 +1261,7 @@ export default function App() {
                       <h3 className="serif text-4xl md:text-5xl tracking-[0.3em] font-bold text-umber">RSVP</h3>
                     </div>
 
-                    <p className="text-[12px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-bold mt-1">by 10.07.2026</p>
+                    <p className="text-[12px] md:text-sm uppercase tracking-[0.4em] text-umber/80 font-bold mt-1">Ended at July 15</p>
                   </div>
                 </div>
               }
